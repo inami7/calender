@@ -3,6 +3,7 @@ import moment from "moment";
 import { Fragment, useState } from "react";
 import ReactDatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./Calendar.css";
 import getMonth from "date-fns/getMonth";
 import getYear from "date-fns/getYear";
 import _ from "lodash";
@@ -10,6 +11,7 @@ import { Box, Divider, Flex, Heading, Input, Stack } from "@chakra-ui/react";
 
 import { PrimaryButton } from "./button/PrimaryButton";
 import { Button1 } from "./button/Button1";
+import { addMonths } from "date-fns";
 registerLocale("ja", ja);
 const years = _.range(2000, getYear(new Date()) + 1, 1);
 const months = Array.from(Array(12).keys());
@@ -18,7 +20,7 @@ export const Test = () => {
   const parseAsMoment = (dateTimeStr: string) => {
     return moment.utc(dateTimeStr, "YYYY-MM-DDTHH:mm:00Z", "ja").utcOffset(9);
   };
-  const toUtcIso8601str = (momentInstance) => {
+  const toUtcIso8601str = (momentInstance: any) => {
     return momentInstance.clone().utc().format("YYYY-MM-DDTHH:mm:00Z");
   };
   const [startDate, setStartDate] = useState(toUtcIso8601str(moment()));
@@ -59,6 +61,7 @@ export const Test = () => {
           <>
             <div>
               <div style={{ float: `left` }}>
+                <p className="startendtitle">開始日</p>
                 <ReactDatePicker
                   inline
                   locale="ja"
@@ -121,6 +124,7 @@ export const Test = () => {
                 />
               </div>
               <div style={{ float: `left` }}>
+                <p className="startendtitle">終了日</p>
                 <ReactDatePicker
                   inline
                   locale="ja"
@@ -129,6 +133,7 @@ export const Test = () => {
                   startDate={moment(startDate).toDate()}
                   endDate={moment(endDate).toDate()}
                   onChange={handleChangeEnd}
+                  minDate={moment(startDate).toDate()}
                   customInput={
                     <button>
                       {endDate && parseAsMoment(endDate).format("YYYY/MM/DD")}

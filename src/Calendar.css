@@ -1,0 +1,12 @@
+.startendtitle {
+  margin: auto;
+  text-align: center;
+}
+
+.react-datepicker__day--in-selecting-range {
+  background-color: steelblue;
+}
+
+.react-datepicker__day.react-datepicker__day--008.react-datepicker__day--selected.react-datepicker__day--range-end.react-datepicker__day--in-range.react-datepicker__day--in-selecting-range.react-datepicker__day--selecting-range-end {
+  background-color: forestgreen;
+}

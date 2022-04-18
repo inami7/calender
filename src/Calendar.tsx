@@ -1,15 +1,17 @@
+import { getDay } from "date-fns";
 import ja from "date-fns/esm/locale/ja";
 import moment from "moment";
 import { Fragment, useState } from "react";
 import ReactDatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./Calendar.css";
 registerLocale("ja", ja);
 
 export const Calendar = () => {
   const parseAsMoment = (dateTimeStr: string) => {
     return moment.utc(dateTimeStr, "YYYY-MM-DDTHH:mm:00Z", "ja").utcOffset(9);
   };
-  const toUtcIso8601str = (momentInstance) => {
+  const toUtcIso8601str = (momentInstance: any) => {
     return momentInstance.clone().utc().format("YYYY-MM-DDTHH:mm:00Z");
   };
   const [startDate, setStartDate] = useState(toUtcIso8601str(moment()));
@@ -30,7 +32,10 @@ export const Calendar = () => {
   const onClickSwitchShowFlag = () => {
     setshowFlag(!showFlag);
   };
-
+  const isWeekday = (date: Date) => {
+    const day = getDay(date);
+    return day !== 0 && day !== 6;
+  };
   return (
     <Fragment>
       <div className="input-area">
@@ -57,6 +62,7 @@ export const Calendar = () => {
                 startDate={moment(startDate).toDate()}
                 endDate={moment(endDate).toDate()}
                 onChange={handleChangeStart}
+                showPreviousMonths
                 customInput={
                   <button>
                     {startDate && parseAsMoment(startDate).format("YYYY/MM/DD")}
@@ -73,6 +79,7 @@ export const Calendar = () => {
                 startDate={moment(startDate).toDate()}
                 endDate={moment(endDate).toDate()}
                 onChange={handleChangeEnd}
+                filterDate={isWeekday}
                 customInput={
                   <button>
                     {endDate && parseAsMoment(endDate).format("YYYY/MM/DD")}
