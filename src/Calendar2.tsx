@@ -1,22 +1,26 @@
 import ja from "date-fns/esm/locale/ja";
 import moment from "moment";
-import { Fragment, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import ReactDatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Calendar.css";
 import getMonth from "date-fns/getMonth";
 import getYear from "date-fns/getYear";
 import _ from "lodash";
-import { Box, Divider, Flex, Heading, Input, Stack } from "@chakra-ui/react";
 
-import { PrimaryButton } from "./button/PrimaryButton";
 import { Button1 } from "./button/Button1";
-import { addMonths } from "date-fns";
+import { PrimaryButton } from "./button/PrimaryButton";
+
+type Props = {
+  onClickBack: () => void;
+};
+
 registerLocale("ja", ja);
 const years = _.range(2000, getYear(new Date()) + 1, 1);
 const months = Array.from(Array(12).keys());
 
-export const Calendar = () => {
+export const Calendar2: FC<Props> = (props: Props) => {
+  const { onClickBack } = props;
   const parseAsMoment = (dateTimeStr: string) => {
     return moment.utc(dateTimeStr, "YYYY-MM-DDTHH:mm:00Z", "ja").utcOffset(9);
   };
@@ -31,31 +35,12 @@ export const Calendar = () => {
   const handleChangeEnd = (selectedDate: Date | null) => {
     setEndDate(toUtcIso8601str(moment(selectedDate)));
   };
-  // 表示フラグ
-  const [showFlag, setshowFlag] = useState(false);
-  const onClickAdd = () => {
-    setshowFlag(!showFlag);
-  };
-  const onClickSwitchShowFlag = () => {
-    setshowFlag(!showFlag);
-  };
 
   return (
     <Fragment>
       <div className="input-area">
-        <Input
-          placeholder="日付を入力"
-          value={
-            startDate &&
-            parseAsMoment(startDate).format("YYYY/MM/DD") +
-              "~" +
-              parseAsMoment(endDate).format("YYYY/MM/DD")
-          }
-          onClick={onClickSwitchShowFlag}
-          style={{ float: `left` }}
-        />
         <br />
-        {showFlag && (
+        {
           <>
             <div>
               <div style={{ float: `left` }}>
@@ -185,9 +170,18 @@ export const Calendar = () => {
               </div>
               <br />
             </div>
-            <PrimaryButton onClick={onClickAdd}>確定</PrimaryButton>
+            <PrimaryButton
+              onClick={() =>
+                onClickBack(
+                  parseAsMoment(startDate).format("YYYY/MM/DD"),
+                  parseAsMoment(endDate).format("YYYY/MM/DD")
+                )
+              }
+            >
+              確定
+            </PrimaryButton>
           </>
-        )}
+        }
       </div>
       <br />
     </Fragment>
