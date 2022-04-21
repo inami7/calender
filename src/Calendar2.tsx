@@ -12,7 +12,7 @@ import { Button1 } from "./button/Button1";
 import { PrimaryButton } from "./button/PrimaryButton";
 
 type Props = {
-  onClickBack: () => void;
+  onClickBack: (val: any) => void;
 };
 
 registerLocale("ja", ja);

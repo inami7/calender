@@ -1,20 +1,24 @@
-import React, { FC, Fragment, memo, useMemo, useState } from "react";
+import React, { FC, Fragment, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Calendar.css";
 import { Input } from "@chakra-ui/react";
 import { Calendar2 } from "./Calendar2";
 
-export const Test: FC = memo(() => {
+let total: string = "";
+
+export const Test: FC = () => {
   // 表示フラグ
   const [showFlag, setshowFlag] = useState(false);
   const onClickSwitchShowFlag = () => {
     setshowFlag(!showFlag);
   };
-  const onClickBack = (start: string, end: string) => {
-    const selectdate = start + "~" + end;
-    console.log(selectdate);
-  };
 
+  const onClickBack = (start: string, end: string) => {
+    total = start + "~" + end;
+    setshowFlag(!showFlag);
+    console.log(total);
+    return total;
+  };
   return (
     <Fragment>
       <div className="input-area">
@@ -22,6 +26,7 @@ export const Test: FC = memo(() => {
           placeholder="日付を入力"
           onClick={onClickSwitchShowFlag}
           style={{ float: `left` }}
+          value={total}
         />
         <br />
         {!showFlag && <Calendar2 onClickBack={onClickBack} />}
@@ -29,4 +34,4 @@ export const Test: FC = memo(() => {
       <br />
     </Fragment>
   );
-});
+};
